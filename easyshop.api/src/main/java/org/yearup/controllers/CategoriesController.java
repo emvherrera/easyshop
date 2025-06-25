@@ -12,95 +12,140 @@ import org.yearup.models.Product;
 
 import java.util.List;
 
+// add the annotations to make this a REST controller
 @RestController
-// for managing categories and their associated products.
-//  This controller handles HTTP requests related to categories, providing endpoints for retrieving, adding, updating, and deleting category data.
-@RequestMapping
-// Maps all requests starting with /categories to methods in this controller.
-
+// add the annotation to make this controller the endpoint for the following url
+@RequestMapping("categories")
+// add annotation to allow cross site origin requests
+//tells the browser that it's safe for your backend to accept requests from origins other than its own
 @CrossOrigin
-// Allows cross-origin requests from any domain, useful for front-end applications running on a different port/domain.
 public class CategoriesController
 {
     private CategoryDao categoryDao;
     private ProductDao productDao;
-    /**
-     * Constructor for CategoriesController.
-     * Spring's @Autowired annotation automatically injects instances of CategoryDao
-     * and ProductDao when the controller is created. This is known as Dependency Injection.
-     * @param categoryDao The DAO for categories.
-     * @param productDao The DAO for products.
-     */
+
+    // create an Autowired controller to inject the categoryDao and ProductDao
     @Autowired
-    public CategoriesController(CategoryDao categoryDao, ProductDao productDao)
-    {
+    public CategoriesController(CategoryDao categoryDao, ProductDao productDao) {
         this.categoryDao = categoryDao;
         this.productDao = productDao;
     }
 
-
-    // create an Autowired controller to inject the categoryDao and ProductDao
-@Autowired
     // add the appropriate annotation for a get action
+    @GetMapping("")
     public List<Category> getAll()
     {
         // find and return all categories
-        return categoryDao.getAllCategories();
+        try {
+            return categoryDao.getAllCategories();
+        }catch (Exception e){
+            System.err.println("Error fetching all categories: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
+        }
     }
 
     // add the appropriate annotation for a get action
+    @GetMapping("{id}")
+    @PreAuthorize("permitAll()")
     public Category getById(@PathVariable int id)
     {
         // get the category by id
-        return null;
+        try {
+            Category category = categoryDao.getById(id);
+            if (category == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with ID: " + id);
+            }
+            return category;
+
+        }catch (Exception e){
+            System.err.println("Error fetching categories: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
+        }
     }
 
-  //      * Handles GET requests to /categories.
-  //     * Returns a list of all categories in the system.
-  //     * @return A List of Category objects.
-
+    // the url to return all products in category 1 would look like this
+    // https://localhost:8080/categories/1/products
     @GetMapping("{categoryId}/products")
-    //Maps HTTP GET request to /categories to this method
-
+    @PreAuthorize("permitAll()")
     public List<Product> getProductsById(@PathVariable int categoryId)
     {
         // get a list of product by categoryId
-        return null;
+        try {
+            Category category = categoryDao.getById(categoryId);
+            if (category == null) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with ID: " + categoryId);
+            }
+            return productDao.listByCategoryId(categoryId);
+        }catch (Exception e){
+            System.err.println("Error fetching product for categories: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
+        }
     }
 
-
-    @PostMapping
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasRole('ADMIN')")
     public Category addCategory(@RequestBody Category category)
     {
         // insert the category
-        return null;
+        try {
+            return categoryDao.create(category);
+        }catch (Exception e){
+            System.err.println("Error adding categories: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
+        }
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
+    @PutMapping("{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
     {
         // update the category by id
+        try {
+            // Ensuring ID matches
+            if (category.getCategoryId() == 0){
+                category.setCategoryId(id);
+            }else if(category.getCategoryId() != id){
+                throw  new ResponseStatusException(HttpStatus.BAD_REQUEST, "Category ID in path does not match ID in request body.");
+            }
+            Category existingCategory = categoryDao.getById(id);
+//            error exception
+            if (existingCategory == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category to be updated not found");
+            }
+            categoryDao.update(id, category);
+        }catch (ResponseStatusException e){
+            throw new RuntimeException(e);
+        }
+        catch (Exception e){
+            System.err.println("Error updating categories: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
+        }
     }
 
 
-    @DeleteMapping
-    // @DeleteMapping("/{id}") // Maps HTTP DELETE requests to /categories/{id} to this method.
+    // add annotation to call this method for a DELETE action - the url path must include the categoryId
+    // add annotation to ensure that only an ADMIN can call this function
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
-    // @PreAuthorize("hasRole('ADMIN')") // Requires the authenticated user to have the 'ADMIN' role.
-    @ResponseStatus
-    //@ResponseStatus(HttpStatus.NO_CONTENT) // Sets the HTTP response status to 204 No Content for a successful deletion.
     public void deleteCategory(@PathVariable int id)
     {
-        // Check if the category exists before attempting to delete.
-        Category existingCategory = categoryDao.getById(id);
-        if (existingCategory == null)
-        {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category not found with ID: " + id);
+        // delete the category by id
+        try {
+            Category existingCategory = categoryDao.getById(id);
+//            error exception
+            if (existingCategory == null){
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Category to be deleted not found");
+            }
+            categoryDao.delete(id);
+        }catch (Exception e){
+            System.err.println("Error deleting categories: " + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
         }
-        // Delete the category by id using the CategoryDao.
-        categoryDao.delete(id);
     }
 }

@@ -90,11 +90,8 @@ public class AuthenticationController {
         }
         catch (Exception e)
         {
-            // e.printstacktrace get error, exception e catch
-            e.printStackTrace();
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad." + e.getMessage());
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
 }
-
