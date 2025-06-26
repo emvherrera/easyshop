@@ -69,6 +69,13 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         return category;
     }
 
+    // --- ADMIN Category Management Implementations
+
+//     * Creates a new category in the database.
+//     * This method is part of the administrative functionality to manage categories.
+//     * @param category The Category object containing the name and description for the new category.
+//     * @return The created Category object with its newly generated ID.
+
     @Override
     public Category create(Category category)
     {
@@ -102,6 +109,11 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
 
+//     * Updates an existing category in the database.
+//     * This method is part of the administrative functionality to manage categories.
+//     * @param categoryId The ID of the category to be updated.
+//     * @param category The Category object containing the updated name and description.
+
     @Override
     public void update(int categoryId, Category category)
     {
@@ -123,6 +135,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         }
     }
 
+
+//     * Deletes a category from the database.
+//     * This method is part of the administrative functionality to manage categories.
+//     * @param categoryId The ID of the category to be deleted.
 
     @Override
     public void delete(int categoryId)

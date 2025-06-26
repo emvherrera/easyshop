@@ -31,6 +31,9 @@ public class Product
         this.imageUrl = imageUrl;
     }
 
+    public Product(int i, String cola, String s, double v, int i1, boolean b, boolean b1) {
+    }
+
     public int getProductId()
     {
         return productId;
