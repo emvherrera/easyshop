@@ -81,11 +81,14 @@ public class CategoriesController
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
         }
     }
+ // --- ADMIN Category Management Methods ---
 
-    // add annotation to call this method for a POST action
-    // add annotation to ensure that only an ADMIN can call this function
+
     @PostMapping
+    //add annotation to call this method for a POST action
     @ResponseStatus(HttpStatus.CREATED)
+    // Annotation to ensure that only an ADMIN can call this function to insert a new category**********************
+
     @PreAuthorize("hasRole('ADMIN')")
     public Category addCategory(@RequestBody Category category)
     {
@@ -99,7 +102,9 @@ public class CategoriesController
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
-    // add annotation to ensure that only an ADMIN can call this function
+// Annotation to ensure that only an ADMIN can call this function to update an existing category *****************
+
+
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
@@ -129,7 +134,7 @@ public class CategoriesController
 
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
-    // add annotation to ensure that only an ADMIN can call this function
+// Annotation to ensure that only an ADMIN can call this function to delete a category ****************
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
