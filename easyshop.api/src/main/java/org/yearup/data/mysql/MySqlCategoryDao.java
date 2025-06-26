@@ -16,7 +16,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     {
         super(dataSource);
     }
-//*******************************************************************************************************
+//************************************************************************ bug*******************************
     @Override
     public List<Category> getAllCategories()
     {

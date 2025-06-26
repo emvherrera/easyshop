@@ -35,7 +35,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         color = color == null ? "" : color;
 
 
-        try (Connection connection = getConnection())                       //*******fixbug
+        try (Connection connection = getConnection())                       //*******fixbug added max price
         {
             PreparedStatement statement = connection.prepareStatement(sql);
 
