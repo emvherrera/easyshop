@@ -13,3 +13,15 @@ As a backend developer for Version 2, my main tasks include:
   * **Checkout**: This significant new feature involves converting a user's shopping cart into an order.An `OrdersController` will be created to retrieve the current user's shopping cart, create and insert a new order into the `orders` table, add each shopping cart item as an `OrderLineItem`, and then clear the shopping cart.
 
 The application has existing functionalities like user registration and login, displaying products by category, and filtering products.The database includes sample products and three demo users (`user`, `admin`, and `george`), all with the password "password". The frontend website project is also available for testing the API's usage on the web.
+
+
+![image](https://github.com/user-attachments/assets/8c32c84f-4e20-492c-b16a-4e4cdffe15b0)
+![image](https://github.com/user-attachments/assets/4e370ea5-954a-46a4-9f5d-d78f6a4d1a19)
+![image](https://github.com/user-attachments/assets/d1c29e18-926f-469e-8f7f-4184091f0e5a)
+![image](https://github.com/user-attachments/assets/ddc8b4ba-79d4-48f2-97ed-e86dbcb9fbe0)
+![image](https://github.com/user-attachments/assets/7227ff7f-d2f8-4155-adc6-55db9cdae32b)
+![image](https://github.com/user-attachments/assets/61eef383-081b-4de3-aa92-7616cfe30ddb)
+![image](https://github.com/user-attachments/assets/92a54fd1-2a14-462d-bd58-822bcb7f7b7b)
+![image](https://github.com/user-attachments/assets/ce9af32a-0a23-4366-8f1c-d3ef19ea5d28)
+
+
