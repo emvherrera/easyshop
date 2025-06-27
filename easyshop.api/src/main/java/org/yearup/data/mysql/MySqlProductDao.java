@@ -18,7 +18,7 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         super(dataSource);
     }
 
-    //Implements the product search/filter functionality as required by (Bug 1)"in the Capstone 3 PDF.
+    //Implements the product search/filter functionality bug 1
     //This method allows searching products by category, price range, and color.
     // The SQL query is constructed to handle optional parameters by checking for -1 (for integers/decimals) or empty string (for color) to include all results for that specific filter if not provided.
     @Override
@@ -128,10 +128,9 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         return null;
     }
 
-    // * Creates a new product in the database.
-     // * This method implements the "POST /products" allowing administrators to insert new products. **************
-     //* @param product The Product object to be created.
-     //* @return The created Product object with its newly generated ID.
+    // Creates a new product in the database.
+    //  This method implements the "POST /products" allowing administrators to insert new products. **************
+
 
     @Override
     public Product create(Product product)
@@ -174,10 +173,8 @@ public class MySqlProductDao extends MySqlDaoBase implements ProductDao
         return null;
     }
 //Updates an existing product in the database.
-//     * This method implements the "PUT /products/{id}"
-//      It specifically addresses "Bug 2" which involved duplicate products
-//     * being created instead of updated. This implementation ensures that an existing product
-//     * record is modified based on its `product_id`.
+//    This method implements the "PUT /products/{id}"
+//    Addresses "Bug 2" which involved duplicate products being created instead of updated. This implementation ensures that an existing product record is modified based on its `product_id`.
     @Override
     public void update(int productId, Product product)
     {

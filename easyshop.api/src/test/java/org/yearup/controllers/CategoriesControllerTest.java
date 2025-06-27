@@ -26,25 +26,23 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 // This annotation tells JUnit 5 to enable Mockito for this test class.
 // Mockito is a popular mocking framework for Java that helps create "mock" objects.
-// Mock objects simulate the behavior of real objects, allowing you to test your code
-// without relying on actual database connections or other external dependencies.
+// Mock objects simulate the behavior of real objects, allowing you to test your code without relying on actual database connections or other external dependencies.
 
 class CategoriesControllerTest {
 
-    //    // @Mock creates a mock instance of CategoryDao.
-    //    // Instead of using the real CategoryDao (which would connect to a database),
-    //    // we use this mock to control its behavior during tests.
+    // @Mock creates a mock instance of CategoryDao.
+    // Instead of using the real CategoryDao (which would connect to a database),
+
 
     @Mock
     private CategoryDao categoryDao;
-// Similarly, @Mock creates a mock instance of ProductDao.
-// This allows us to simulate product-related operations without hitting the database.
+  // Similarly, @Mock creates a mock instance of ProductDao.
+    // This allows us to simulate product-related operations without hitting the database.
 
     @Mock
     private ProductDao productDao;
 
-// @InjectMocks injects the mock objects (categoryDao and productDao) into
-// the CategoriesController instance. This means that when we call methods
+// @InjectMocks injects the mock objects (categoryDao and productDao) into the CategoriesController instance. This means that when we call methods
 // on 'categoriesController' in our tests, it will use our mock DAOs instead of real ones.
 
     @InjectMocks

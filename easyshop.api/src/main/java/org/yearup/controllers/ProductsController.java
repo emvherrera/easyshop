@@ -85,9 +85,8 @@ public class ProductsController
     }
     // Handles PUT requests to /products/{id}.
     //     This method implements the "PUT /products/{id}"
-    //     in the Capstone 3 PDF. It specifically addresses "Bug 2" which involved duplicate products
-    //     being created instead of updated. This implementation ensures that an existing product
-    //     record is modified based on its `product_id`.
+    //     Addresses "Bug 2" which involved duplicate products being created instead of updated.
+    //     This implementation ensures that an existing product record is modified based on its `product_id`.
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")   /// /**********
