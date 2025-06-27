@@ -24,6 +24,8 @@ public class ProductsController
         this.productDao = productDao;
     }
 
+    //implements the product search/filter functionality BUG 1
+
     @GetMapping("")
     @PreAuthorize("permitAll()")
     public List<Product> search(@RequestParam(name="cat", required = false) Integer categoryId,
@@ -42,8 +44,11 @@ public class ProductsController
         }
     }
 
+    //      * Handles GET requests to /products/{id}.
+    //     * This method implements the requirement to retrieve a single product by its ID,
+
     @GetMapping("{id}")
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("permitAll()")  //// Allows anyone to access this endpoint.
     public Product getById(@PathVariable int id )
     {
         try
@@ -61,6 +66,10 @@ public class ProductsController
         }
     }
 
+    //     Handles POST requests to /products.
+    //     This method implements the "POST /products"."
+    //    Allows administrators to insert new products.
+
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Product addProduct(@RequestBody Product product)
@@ -74,21 +83,29 @@ public class ProductsController
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
+    // Handles PUT requests to /products/{id}.
+    //     This method implements the "PUT /products/{id}"
+    //     in the Capstone 3 PDF. It specifically addresses "Bug 2" which involved duplicate products
+    //     being created instead of updated. This implementation ensures that an existing product
+    //     record is modified based on its `product_id`.
 
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")   /// /**********
     public void updateProduct(@PathVariable int id, @RequestBody Product product)
     {
-        try
+        try //// Delegates the update operation to the ProductDao.
         {
             productDao.update(id, product);
         }
-        catch(Exception ex)
+        catch(Exception ex) // // Catches any unexpected exceptions and returns a 500 Internal Server Error.
         {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad.");
         }
     }
 
+    // Handles DELETE requests to /products/{id}.
+    // This method implements the "DELETE /products/{id}"
+    // Allows administrators to remove products.
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteProduct(@PathVariable int id)
@@ -97,6 +114,7 @@ public class ProductsController
         {
             var product = productDao.getById(id);
 
+    // If the product is not found, throw a 404 Not Found exception.
             if(product == null)
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 

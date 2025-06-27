@@ -19,26 +19,52 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+// This is a Unit Test class for the CategoriesController.
+// Unit tests are used to test individual components (units) of your code in isolation.
+// Here, we are testing the methods within CategoriesController to ensure they behave as expected.
+
 @ExtendWith(MockitoExtension.class)
+// This annotation tells JUnit 5 to enable Mockito for this test class.
+// Mockito is a popular mocking framework for Java that helps create "mock" objects.
+// Mock objects simulate the behavior of real objects, allowing you to test your code
+// without relying on actual database connections or other external dependencies.
+
 class CategoriesControllerTest {
+
+    //    // @Mock creates a mock instance of CategoryDao.
+    //    // Instead of using the real CategoryDao (which would connect to a database),
+    //    // we use this mock to control its behavior during tests.
 
     @Mock
     private CategoryDao categoryDao;
+// Similarly, @Mock creates a mock instance of ProductDao.
+// This allows us to simulate product-related operations without hitting the database.
 
     @Mock
     private ProductDao productDao;
 
+// @InjectMocks injects the mock objects (categoryDao and productDao) into
+// the CategoriesController instance. This means that when we call methods
+// on 'categoriesController' in our tests, it will use our mock DAOs instead of real ones.
+
     @InjectMocks
     private CategoriesController categoriesController;
+    // These are sample data objects that we'll use in our tests.
+    // It's good practice to define sample data that represents typical scenarios.
 
     private Category sampleCategory;
     private Product sampleProduct;
+
+    // The @BeforeEach annotation means this method will run before *each* test method.It's used to set up common test data or configurations, ensuring each test starts with a clean and predictable state.
 
     @BeforeEach
     void setUp() {
         sampleCategory = new Category(1, "Electronics", "Router");
         sampleProduct = new Product(1, "Router", "WiFi router", 59.99, 1, true, true);
     }
+
+// * Test case for the `getAll()` method in CategoriesController.
+// * This test verifies that the controller correctly retrieves all categories.
 
     @Test
     void getAllCategories() {
@@ -57,6 +83,8 @@ class CategoriesControllerTest {
         verify(categoryDao, times(1)).getAllCategories();
     }
 
+    //Test case for `getById()` when the category exists.
+    //Verifies that the controller returns the correct category when found.
     @Test
     void getCategoryById_WhenExists() {
         when(categoryDao.getById(1)).thenReturn(sampleCategory);

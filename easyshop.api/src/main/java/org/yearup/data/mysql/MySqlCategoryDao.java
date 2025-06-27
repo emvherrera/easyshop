@@ -9,6 +9,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//  Implements the CategoryDao interface, providing concrete methods for interacting with the 'categories' table in the database.
+
 @Component
 public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 {
@@ -17,6 +20,8 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         super(dataSource);
     }
 //************************************************************************ bug*******************************
+
+    //  This method supports the "GET http://localhost:8080/categories" endpoint
     @Override
     public List<Category> getAllCategories()
     {
@@ -41,6 +46,7 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
         return categories;
     }
 
+// * This method supports the "GET http://localhost:8080/categories/{id}" endpoint
 
     @Override
     public Category getById(int categoryId)
@@ -71,10 +77,9 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
 
     // --- ADMIN Category Management Implementations
 
-//     * Creates a new category in the database.
-//     * This method is part of the administrative functionality to manage categories.
-//     * @param category The Category object containing the name and description for the new category.
-//     * @return The created Category object with its newly generated ID.
+
+//     Creates a new category in the category table.
+//    This method is part of the administrative functionality to manage categories. implements "POST http://localhost:8080/categories" endpoint
 
     @Override
     public Category create(Category category)
@@ -109,10 +114,9 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
 
-//     * Updates an existing category in the database.
-//     * This method is part of the administrative functionality to manage categories.
-//     * @param categoryId The ID of the category to be updated.
-//     * @param category The Category object containing the updated name and description.
+//     Updates an existing category in the database.
+//     This method is part of the administrative functionality to manage categories.
+    // This method implements the "PUT http://localhost:8080/categories/{id}" endpoint
 
     @Override
     public void update(int categoryId, Category category)
@@ -136,9 +140,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
     }
 
 
-//     * Deletes a category from the database.
-//     * This method is part of the administrative functionality to manage categories.
-//     * @param categoryId The ID of the category to be deleted.
+//      Deletes a category from the database.
+//      This method is part of the administrative functionality to manage categories.
+    // This method implements the "DELETE http://localhost:8080/categories/{id}" endpoint
+
 
     @Override
     public void delete(int categoryId)
@@ -157,6 +162,10 @@ public class MySqlCategoryDao extends MySqlDaoBase implements CategoryDao
             throw new RuntimeException(e);
         }
     }
+
+
+    // Helper method to map a ResultSet row to a Category object.
+    // This method is used internally by other DAO methods to convert database rows into Java Category objects, making the code cleaner and more reusable.
 
     private Category mapRow(ResultSet row) throws SQLException
     {

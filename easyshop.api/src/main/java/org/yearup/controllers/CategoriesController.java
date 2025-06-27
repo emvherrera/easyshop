@@ -11,13 +11,12 @@ import org.yearup.models.Category;
 import org.yearup.models.Product;
 
 import java.util.List;
-
-// add the annotations to make this a REST controller
+//Phase 1
+// This class serves as the REST controller for managing product categories.
+// It exposes various endpoints for retrieving, adding, updating, and deleting categories.
 @RestController
 // add the annotation to make this controller the endpoint for the following url
 @RequestMapping("categories")
-// add annotation to allow cross site origin requests
-//tells the browser that it's safe for your backend to accept requests from origins other than its own
 @CrossOrigin
 public class CategoriesController
 {
@@ -44,7 +43,10 @@ public class CategoriesController
         }
     }
 
-    // add the appropriate annotation for a get action
+    //  Handles GET requests to /categories/{id}.
+    //  This method implements the "GET http://localhost:8080/categories/1" endpoint
+    //  It allows users to retrieve details for a specific category by its ID.
+
     @GetMapping("{id}")
     @PreAuthorize("permitAll()")
     public Category getById(@PathVariable int id)
@@ -81,15 +83,13 @@ public class CategoriesController
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Oops... our bad. Could not retrieve categories.");
         }
     }
- // --- ADMIN Category Management Methods ---
-
-
+    // ADMIN Category Management Methods ---
+    // Handles POST requests to /categories.This method implements the "POST http://localhost:8080/categories" endpoint
+    // implements that Only administrators (users with the ADMIN role) should be allowed to insert, update or delete a category.
     @PostMapping
-    //add annotation to call this method for a POST action
     @ResponseStatus(HttpStatus.CREATED)
-    // Annotation to ensure that only an ADMIN can call this function to insert a new category**********************
-
     @PreAuthorize("hasRole('ADMIN')")
+
     public Category addCategory(@RequestBody Category category)
     {
         // insert the category
@@ -101,10 +101,10 @@ public class CategoriesController
         }
     }
 
-    // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
-// Annotation to ensure that only an ADMIN can call this function to update an existing category *****************
 
-
+    // Handles PUT requests to /categories/{id}.
+    // This method implements the "PUT http://localhost:8080/categories/{id}" endpoin
+    // This functionality is restricted to administrators (ADMIN role).
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public void updateCategory(@PathVariable int id, @RequestBody Category category)
@@ -133,8 +133,11 @@ public class CategoriesController
     }
 
 
-    // add annotation to call this method for a DELETE action - the url path must include the categoryId
-// Annotation to ensure that only an ADMIN can call this function to delete a category ****************
+
+    // Handles DELETE requests to /categories/{id}.
+    // This method implements the "DELETE http://localhost:8080/categories/{id}" endpoint
+    // This functionality is restricted to administrators (ADMIN role).
+
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
